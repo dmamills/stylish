@@ -35,7 +35,7 @@ describe('stylish', () => {
       const styleEls = document.head.querySelectorAll('style');
       styleEls.length.should.equal(1);
 
-      const styleLines = styleEls[0].innerText.split('\n');
+      const styleLines = styleEls[0].innerHTML.split('\n');
       styleLines.length.should.equal(2);
       styleLines[0].should.equal(`.${c1} { color: red; }`);
       styleLines[1].should.equal(`.${c2} { color: blue; }`);
@@ -44,13 +44,13 @@ describe('stylish', () => {
     it('should add the expected styles to the stylesheet', () => {
       const className = stylish(simpleStyles);
       const styleEl = document.head.querySelector('style');
-      styleEl.innerText.should.equal(`.${className} { color: red; }`);
+      styleEl.innerHTML.should.equal(`.${className} { color: red; }`);
     });
 
     it('should handle multiple rules', () => {
       const className = stylish({ color: 'red', 'background-color': 'green'});
       const styleEl = document.head.querySelector('style');
-      styleEl.innerText.should.equal(`.${className} { color: red; background-color: green; }`);
+      styleEl.innerHTML.should.equal(`.${className} { color: red; background-color: green; }`);
     });
 
     it('should create rules for pseudo selectors', () => {
@@ -65,7 +65,7 @@ describe('stylish', () => {
       });
 
       const styleEl = document.head.querySelector('style');
-      const styleLines = styleEl.innerText.split('\n');
+      const styleLines = styleEl.innerHTML.split('\n');
       styleLines.length.should.equal(3);
       styleLines[1].should.equal(`.${className}:hover { color: green; }`);
       styleLines[2].should.equal(`.${className}:first-child { color: blue; }`);
@@ -80,7 +80,7 @@ describe('stylish', () => {
       });
 
       const styleEl = document.head.querySelector('style');
-      const styleLines = styleEl.innerText.split('\n');
+      const styleLines = styleEl.innerHTML.split('\n');
       styleLines.length.should.equal(2);
       styleLines[1].should.equal(`.${className}[role="foo"] { color: green; }`);
     });
@@ -96,7 +96,7 @@ describe('stylish', () => {
         }
       });
       const styleEl = document.head.querySelector('style');
-      const styleLines = styleEl.innerText.split('\n');
+      const styleLines = styleEl.innerHTML.split('\n');
       styleLines.length.should.equal(3);
       styleLines[1].should.equal(`.${className} + p { color: dodgerblue; }`);
       styleLines[2].should.equal(`.${className} ~ p { border-color: crimson; }`);
@@ -113,7 +113,7 @@ describe('stylish', () => {
         }
       });
       const styleEl = document.head.querySelector('style');
-      const styleLines = styleEl.innerText.split('\n');
+      const styleLines = styleEl.innerHTML.split('\n');
       styleLines.length.should.equal(3);
       styleLines[1].should.equal(`.${className} p { color: dodgerblue; }`);
       styleLines[2].should.equal(`.${className} > p { color: crimson; }`);

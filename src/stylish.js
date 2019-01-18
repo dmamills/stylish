@@ -4,11 +4,11 @@ const STYLESHEET_ID = 'styled-sheet';
 function createOrUpdateStyledNode(content) {
   let el = document.getElementById(STYLESHEET_ID);
   if (el) {
-    el.innerText = `${el.innerText}\n${content}`;
+    el.innerHTML = `${el.innerHTML}\n${content}`;
   } else {
     let el = document.createElement("style");
     el.setAttribute("id", STYLESHEET_ID);
-    el.innerText = content;
+    el.innerHTML = content;
     document.head.appendChild(el);
   }
 }
