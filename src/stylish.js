@@ -14,43 +14,35 @@ function createOrUpdateStyledNode(content) {
 }
 
 const randId = () => Math.random().toString(36).substring(7);
+const stringify = (selector, arr) => `${selector} { ${arr.join(" ")} }`;
 
 function stylish(styles) {
   let className = `${CLASS_PREFIX}-${randId()}`;
   let psuedoStyles = {};
-  let mainStyles = [];
-
 
   function parse(obj) {
-    let a = [];
-
-    for (let k in obj) {
+    return Object.keys(obj).reduce((acc, k) => {
       if (typeof obj[k] === "string") {
-        a.push(`${k}: ${obj[k]};`);
+        acc.push(`${k}: ${obj[k]};`);
       } else {
         psuedoStyles[k] = parse(obj[k]);
       }
-    }
-    return a;
+      return acc;
+    }, []);
   }
 
-  function stringify(selector, arr) {
-    return `${selector} { ${arr.join(" ")} }`;
-  }
+  const mainStyles = parse(styles);
+  const selector = `.${className}`;
+  const cssRules = [
+    stringify(selector, mainStyles),
+    ...Object.keys(psuedoStyles).reduce((acc, pseudoSelector) => {
+      let sel = `${selector}${pseudoSelector}`;
+      acc.push(stringify(sel, psuedoStyles[pseudoSelector]));
+      return acc;
+    }, [])
+  ];
 
-  mainStyles = parse(styles);
-  const sel = `.${className}`;
-
-  let strs = [stringify(sel, mainStyles)];
-  for (let pseudoSelector in psuedoStyles) {
-    const psuedoStr = stringify(
-      `${sel}${pseudoSelector}`,
-      psuedoStyles[pseudoSelector]
-    );
-    strs.push(psuedoStr);
-  }
-
-  createOrUpdateStyledNode(strs.join('\n'));
+  createOrUpdateStyledNode(cssRules.join('\n'));
 
   return className;
 }
