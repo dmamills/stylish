@@ -6,7 +6,7 @@ a strange but straightforward way to write inline styles. can be used with react
 
 ## usage
 
-```javascript
+```jsx
 import stylish from 'stylish'
 
 const className = stylish({
