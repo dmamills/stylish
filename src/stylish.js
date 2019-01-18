@@ -2,10 +2,9 @@ const CLASS_PREFIX = 'styled';
 const STYLESHEET_ID = 'styled-sheet';
 
 function createOrUpdateStyledNode(content) {
-  let el = document.getElementById("bfrstyles");
+  let el = document.getElementById(STYLESHEET_ID);
   if (el) {
-    el.innerText = `${el.innerText}
-    ${content}`;
+    el.innerText = `${el.innerText}\n${content}`;
   } else {
     let el = document.createElement("style");
     el.setAttribute("id", STYLESHEET_ID);
@@ -14,9 +13,7 @@ function createOrUpdateStyledNode(content) {
   }
 }
 
-function randId() {
-  return Math.random().toString(36).substring(7);
-}
+const randId = () => Math.random().toString(36).substring(7);
 
 function stylish(styles) {
   let className = `${CLASS_PREFIX}-${randId()}`;
@@ -58,4 +55,4 @@ function stylish(styles) {
   return className;
 }
 
-module.exports = stylish;
+export default stylish;

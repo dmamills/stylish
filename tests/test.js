@@ -1,8 +1,8 @@
 "use strict";
 
-const should = require('should');
-const browser = require('browser-env');
-const stylish = require('../');
+import should from 'should';
+import browser from 'browser-env';
+import stylish from '../';
 
 beforeEach(() => {
   browser();
@@ -27,6 +27,18 @@ describe('stylish', () => {
       const className = stylish(simpleStyles);
       const styleEl = document.head.querySelector('style');
       styleEl.id.should.equal('styled-sheet');
+    });
+
+    it('should reuse the same stylesheet', () => {
+      const c1 = stylish(simpleStyles);
+      const c2 = stylish({ color: 'blue' });
+      const styleEls = document.head.querySelectorAll('style');
+      styleEls.length.should.equal(1);
+
+      const styleLines = styleEls[0].innerText.split('\n');
+      styleLines.length.should.equal(2);
+      styleLines[0].should.equal(`.${c1} { color: red; }`);
+      styleLines[1].should.equal(`.${c2} { color: blue; }`);
     });
 
     it('should add the expected styles to the stylesheet', () => {

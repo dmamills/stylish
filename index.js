@@ -1,3 +1,3 @@
-"use strict";
+import stylish from './src/stylish';
 
-module.exports = require('./src/stylish');
+export default stylish;
