@@ -10,7 +10,7 @@ Stylish improves on inline styles by allowing you to use `:pseudo`, ` + sibling`
 
 ### React
 ```jsx
-import stylish from 'stylish'
+import stylish from 'stylish';
 
 const className = stylish({
   'background-color': 'tomato',
@@ -31,7 +31,31 @@ function SomeComponent() {
     </div>
   );
 }
+```
 
+### Vue
+```js
+import stylish from 'stylish';
+
+const className = stylish({
+  'background-color': 'tomato',
+  'border': '1px solid tomato'
+  ':hover': {
+    'background-color': 'white',
+    'color': 'white
+  },
+  '> h1': {
+    'color': 'dodgerblue'
+  }
+});
+
+Vue.component('some-component', {
+  template: `
+    <div class="${className}">
+      <h1>I'm styled!</h1>
+    </div>
+  `
+});
 ```
 
 ## How it works
@@ -40,7 +64,7 @@ Stylish maintains a single stylesheet, which it adds to your document's `head`.
 When Stylish is invoked, it parses the provided styles and converts the object to CSS rules.
 Those rules are then appended to the generated stylesheet.
 The class name returned from the function can then be used on any DOM element.
-Stylish is completey framework agnostic. It'll even work without a framework.
+Stylish is completey framework agnostic.
 
 ## Dev
 
