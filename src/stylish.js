@@ -16,6 +16,11 @@ function createOrUpdateStyledNode(content) {
 const randId = () => Math.random().toString(36).substring(7);
 const stringify = (selector, arr) => `${selector} { ${arr.join(" ")} }`;
 
+
+const uppercasePattern = /([A-Z])/g;
+const msPattern = /^ms-/;
+const hyphenateStyleName = (name) => name.replace(uppercasePattern, '-$1').toLowerCase().replace(msPattern, '-ms-');
+
 function stylish(styles) {
   let className = `${CLASS_PREFIX}-${randId()}`;
   let psuedoStyles = {};
@@ -23,7 +28,7 @@ function stylish(styles) {
   function parse(obj) {
     return Object.keys(obj).reduce((acc, k) => {
       if (typeof obj[k] === "string") {
-        acc.push(`${k}: ${obj[k]};`);
+        acc.push(`${hyphenateStyleName(k)}: ${obj[k]};`);
       } else {
         psuedoStyles[k] = parse(obj[k]);
       }

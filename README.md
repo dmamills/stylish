@@ -13,14 +13,14 @@ Stylish improves on inline styles by allowing you to use `:pseudo`, ` + sibling`
 import stylish from 'stylish';
 
 const className = stylish({
-  'background-color': 'tomato',
-  'border': '1px solid tomato'
+  backgroundColor: 'tomato',
+  border: '1px solid tomato'
   ':hover': {
-    'background-color': 'white',
-    'color': 'white'
+    backgroundColor: 'white',
+    color: 'white'
   },
   '> h1': {
-    'color': 'dodgerblue'
+    color: 'dodgerblue'
   }
 });
 
@@ -38,14 +38,14 @@ function SomeComponent() {
 import stylish from 'stylish';
 
 const className = stylish({
-  'background-color': 'tomato',
-  'border': '1px solid tomato'
+  backgroundColor: 'tomato',
+  border: '1px solid tomato'
   ':hover': {
-    'background-color': 'white',
-    'color': 'white'
+    backgroundColor: 'white',
+    color: 'white'
   },
   '> h1': {
-    'color': 'dodgerblue'
+    color: 'dodgerblue'
   }
 });
 

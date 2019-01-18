@@ -13,6 +13,7 @@ const simpleStyles = {
 }
 
 describe('stylish', () => {
+
     it('stylish should be a function', () => {
         stylish.should.be.Function();
     });
@@ -117,5 +118,17 @@ describe('stylish', () => {
       styleLines.length.should.equal(3);
       styleLines[1].should.equal(`.${className} p { color: dodgerblue; }`);
       styleLines[2].should.equal(`.${className} > p { color: crimson; }`);
+    });
+
+    it('should support camelCase style properties', () => {
+      const className = stylish({
+        backgroundColor: 'tomato',
+        border: '1px solid black',
+        borderLeftColor: 'green'
+      });
+      const styleEl = document.head.querySelector('style');
+      const styleLines = styleEl.innerHTML.split('\n');
+      styleLines.length.should.equal(1);
+      styleLines[0].should.equal(`.${className} { background-color: tomato; border: 1px solid black; border-left-color: green; }`);
     });
 });
