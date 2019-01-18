@@ -8,14 +8,20 @@ beforeEach(() => {
   browser();
 });
 
+afterEach(() => {
+  stylish.clearCache();
+});
+
 const simpleStyles = {
   color: 'red'
 }
 
 describe('stylish', () => {
 
-    it('stylish should be a function', () => {
+    it('stylish should have expected functions', () => {
         stylish.should.be.Function();
+        stylish.cache.should.be.Function();
+        stylish.clearCache.should.be.Function();
     });
 
     it('should return a class name', () => {
@@ -40,6 +46,17 @@ describe('stylish', () => {
       styleLines.length.should.equal(2);
       styleLines[0].should.equal(`.${c1} { color: red; }`);
       styleLines[1].should.equal(`.${c2} { color: blue; }`);
+    });
+
+    it('should not generate identical styles multiple times.', () => {
+      const c1 = stylish(simpleStyles);
+      const c2 = stylish(simpleStyles);
+
+      const styleEls = document.head.querySelectorAll('style');
+      const styleLines = styleEls[0].innerHTML.split('\n');
+      styleLines.length.should.equal(1);
+      styleLines[0].should.equal(`.${c1} { color: red; }`);
+      c1.should.equal(c2); 
     });
 
     it('should add the expected styles to the stylesheet', () => {
@@ -130,5 +147,24 @@ describe('stylish', () => {
       const styleLines = styleEl.innerHTML.split('\n');
       styleLines.length.should.equal(1);
       styleLines[0].should.equal(`.${className} { background-color: tomato; border: 1px solid black; border-left-color: green; }`);
+    });
+
+    it('cache function should return current cache state', () => {
+      const c1 = stylish({ color: 'red' });
+      const c2 = stylish({ color: 'red' });
+      
+      Object.keys(stylish.cache()).length.should.equal(1);
+
+      const c3 = stylish({ color: 'blue' });
+      Object.keys(stylish.cache()).length.should.equal(2);
+    });
+
+   it('clear cache function should reset cache', () => {
+      const c1 = stylish({ color: 'red' });
+      
+      Object.keys(stylish.cache()).length.should.equal(1);
+      stylish.clearCache();
+
+      Object.keys(stylish.cache()).length.should.equal(0);
     });
 });

@@ -1,5 +1,8 @@
 const CLASS_PREFIX = 'styled';
 const STYLESHEET_ID = 'styled-sheet';
+import { randId, stringify, hyphenateStyleName, hash } from './utils';
+
+let cache = {};
 
 function createOrUpdateStyledNode(content) {
   let el = document.getElementById(STYLESHEET_ID);
@@ -13,17 +16,16 @@ function createOrUpdateStyledNode(content) {
   }
 }
 
-const randId = () => Math.random().toString(36).substring(7);
-const stringify = (selector, arr) => `${selector} { ${arr.join(" ")} }`;
-
-
-const uppercasePattern = /([A-Z])/g;
-const msPattern = /^ms-/;
-const hyphenateStyleName = (name) => name.replace(uppercasePattern, '-$1').toLowerCase().replace(msPattern, '-ms-');
-
 function stylish(styles) {
-  let className = `${CLASS_PREFIX}-${randId()}`;
   let psuedoStyles = {};
+  let hashedStyles = hash(JSON.stringify(styles));
+
+  if(cache[hashedStyles]) {
+    return cache[hashedStyles];
+  }
+
+  let className = `${CLASS_PREFIX}-${randId()}`;
+  cache[hashedStyles] = className;
 
   function parse(obj) {
     return Object.keys(obj).reduce((acc, k) => {
@@ -50,6 +52,11 @@ function stylish(styles) {
   createOrUpdateStyledNode(cssRules.join('\n'));
 
   return className;
+}
+
+stylish.__proto__.cache = () => cache;
+stylish.__proto__.clearCache = () => {
+  cache = {};
 }
 
 export default stylish;

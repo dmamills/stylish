@@ -1,6 +1,6 @@
 {
   "name": "@dmamills/stylish",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "inline styles, kinda",
   "main": "index.js",
   "scripts": {
