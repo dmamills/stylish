@@ -1,22 +1,26 @@
-# stylish
+# Stylish
 
 [![codecov.io](https://codecov.io/github/dmamills/stylish/coverage.svg?branch=master)](https://codecov.io/github/dmamills/stylish?branch=master) [![Build Status](https://secure.travis-ci.org/dmamills/stylish.png)](http://travis-ci.org/dmamills/stylish)
 
-a strange but straightforward way to write inline styles. can be used with react almost like you would with the `style` tag, but stylish allows for you to have psuedo and other type of selectors.
+A strange but straightforward way to write inline styles.
+Can be used with React, almost like you would with the `style` attribute.
+Stylish improves on inline styles by allowing you to use `:pseudo`, ` + sibling`, and other more complex selectors.
 
-## usage
+## Usage
 
+### React
 ```jsx
 import stylish from 'stylish'
 
 const className = stylish({
-  'background-color': 'red',
-  'border': '1px solid black'
+  'background-color': 'tomato',
+  'border': '1px solid tomato'
   ':hover': {
-    'background-color': 'green'
+    'background-color': 'white',
+    'color': 'white
   },
   '> h1': {
-    color: 'white'
+    'color': 'dodgerblue'
   }
 });
 
@@ -30,11 +34,15 @@ function SomeComponent() {
 
 ```
 
-## how it works
+## How it works
 
-stylish maintains a single stylesheet that it adds to your document's head. when stylish is invoked it parses the object provided to it and converts it css rules that it appends to it's stylesheet. the class name returned from the function can then be used on any dom element, stylish is completed framework agnostic.
+Stylish maintains a single stylesheet, which it adds to your document's `head`.
+When Stylish is invoked, it parses the provided styles and converts the object to CSS rules.
+Those rules are then appended to the generated stylesheet.
+The class name returned from the function can then be used on any DOM element.
+Stylish is completey framework agnostic. It'll even work without a framework.
 
-## dev
+## Dev
 
 ```
 npm test
