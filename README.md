@@ -17,7 +17,7 @@ const className = stylish({
   'border': '1px solid tomato'
   ':hover': {
     'background-color': 'white',
-    'color': 'white
+    'color': 'white'
   },
   '> h1': {
     'color': 'dodgerblue'
@@ -42,7 +42,7 @@ const className = stylish({
   'border': '1px solid tomato'
   ':hover': {
     'background-color': 'white',
-    'color': 'white
+    'color': 'white'
   },
   '> h1': {
     'color': 'dodgerblue'
