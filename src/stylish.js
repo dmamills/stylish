@@ -15,13 +15,12 @@ function createOrUpdateStyledNode(content) {
     document.head.appendChild(el);
   }
 }
-
-function stylish(styles) {
+function generateClass(styles) {
   let psuedoStyles = {};
   let hashedStyles = hash(JSON.stringify(styles));
 
   if(cache[hashedStyles]) {
-    return cache[hashedStyles];
+    return { className: cache[hashedStyles] };
   }
 
   let className = `${CLASS_PREFIX}-${randId()}`;
@@ -49,9 +48,35 @@ function stylish(styles) {
     }, [])
   ];
 
-  createOrUpdateStyledNode(cssRules.join('\n'));
+  //createOrUpdateStyledNode(cssRules.join('\n'));
 
-  return className;
+  return {
+    className,
+    cssRules
+  };
+}
+
+function stylish(styles) {
+   if(arguments.length === 1) {
+      const g = generateClass(styles);
+
+      if(g.cssRules) {
+        createOrUpdateStyledNode(g.cssRules.join('\n'));
+      }
+
+      return g.className;
+   }
+
+   const results = [].reduce.call(arguments, (acc, s) => {
+      const g = generateClass(s);
+      acc.classNames.push(g.className);
+      if(g.cssRules) acc.cssRules.push(g.cssRules);
+      return acc;
+   }, { classNames: [], cssRules: []});
+
+   createOrUpdateStyledNode(results.cssRules.join('\n'));
+
+  return results.classNames;
 }
 
 stylish.__proto__.cache = () => cache;

@@ -167,4 +167,22 @@ describe('stylish', () => {
 
       Object.keys(stylish.cache()).length.should.equal(0);
     });
+
+
+    it('should accept multiple objects to batch generate styles', () => {
+      const classNames = stylish({
+        color: 'red'
+      }, {
+        color: 'blue'
+      });
+
+      classNames.should.be.Array();
+      classNames.length.should.equal(2);
+      const styleEl = document.head.querySelector('style');
+
+      const styleLines = styleEl.innerHTML.split('\n');
+      styleLines.length.should.equal(2);
+      styleLines[0].should.equal(`.${classNames[0]} { color: red; }`);
+      styleLines[1].should.equal(`.${classNames[1]} { color: blue; }`);
+    });
 });

@@ -58,6 +58,25 @@ Vue.component('some-component', {
 });
 ```
 
+## API
+
+stylish exposes a single function that returns the generated class names. it is a variadic function that can take any number of style objects and will batch create them.
+
+```
+const single = stylish({ color: 'red' }) // -> "stylish-<id>"
+const multiple = stylish({ color: 'red' }, { color: 'blue' }) // -> [ "stylish-<id>", "stylish-<id>" ]
+
+```
+
+stylish also maintains an internal cache to prevent duplication of classes. when stylish is invoked, the style object is stringifed, and then a hash code is generated from that string.
+
+there are two helper functions exposed that deal with this cache. They are mostly used internally for testing.
+
+```
+stylish.cache() // => { } returns cache object
+stylish.clearCache() // => will reset the internal cache
+```
+
 ## How it works
 
 Stylish maintains a single stylesheet, which it adds to your document's `head`.
