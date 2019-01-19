@@ -10,7 +10,7 @@ Stylish improves on inline styles by allowing you to use `:pseudo`, ` + sibling`
 
 ### React
 ```jsx
-import stylish from 'stylish';
+import stylish from '@dmamills/stylish';
 
 const className = stylish({
   backgroundColor: 'tomato',
@@ -35,7 +35,7 @@ function SomeComponent() {
 
 ### Vue
 ```js
-import stylish from 'stylish';
+import stylish from '@dmamills/stylish';
 
 const className = stylish({
   backgroundColor: 'tomato',
@@ -76,7 +76,7 @@ npm run coverage
 
 ## license
 
-Copyright (c) 2019 Daniel Mills. http://yomills.com
+Copyright (c) 2019 Daniel Mills. https://yomills.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
