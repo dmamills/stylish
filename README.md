@@ -68,6 +68,15 @@ const multiple = stylish({ color: 'red' }, { color: 'blue' }) // -> [ "stylish-<
 
 ```
 
+stylish also allows for it's settings to be customized by exporting a single function for this. *settings must be overridden before any calls to `stylish` are made.*
+
+```
+stylish.config({
+  stylesheetId: 'custom-id', //The id assigned to the stylesheet created
+  classPrefix: 'custom-prefix', // The prefix that will be used for generated class names
+});
+```
+
 stylish also maintains an internal cache to prevent duplication of classes. when stylish is invoked, the style object is stringifed, and then a hash code is generated from that string.
 
 there are two helper functions exposed that deal with this cache. They are mostly used internally for testing.

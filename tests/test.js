@@ -18,22 +18,23 @@ const simpleStyles = {
 
 describe('stylish', () => {
 
-    it('stylish should have expected functions', () => {
+    it('should should have expected functions', () => {
         stylish.should.be.Function();
         stylish.cache.should.be.Function();
         stylish.clearCache.should.be.Function();
+        stylish.setConfig.should.be.Function();
     });
 
     it('should return a class name', () => {
       const className = stylish(simpleStyles);
       className.should.be.String();
-      className.should.startWith('styled-');
+      className.should.startWith('stylish-');
     });
 
     it('should create a style tag', () => {
       const className = stylish(simpleStyles);
       const styleEl = document.head.querySelector('style');
-      styleEl.id.should.equal('styled-sheet');
+      styleEl.id.should.equal('stylish-sheet');
     });
 
     it('should reuse the same stylesheet', () => {
@@ -48,17 +49,6 @@ describe('stylish', () => {
       styleLines[1].should.equal(`.${c2} { color: blue; }`);
     });
 
-    it('should not generate identical styles multiple times.', () => {
-      const c1 = stylish(simpleStyles);
-      const c2 = stylish(simpleStyles);
-
-      const styleEls = document.head.querySelectorAll('style');
-      const styleLines = styleEls[0].innerHTML.split('\n');
-      styleLines.length.should.equal(1);
-      styleLines[0].should.equal(`.${c1} { color: red; }`);
-      c1.should.equal(c2); 
-    });
-
     it('should add the expected styles to the stylesheet', () => {
       const className = stylish(simpleStyles);
       const styleEl = document.head.querySelector('style');
@@ -70,6 +60,49 @@ describe('stylish', () => {
       const styleEl = document.head.querySelector('style');
       styleEl.innerHTML.should.equal(`.${className} { color: red; background-color: green; }`);
     });
+
+    it('should not generate identical styles multiple times.', () => {
+      const c1 = stylish(simpleStyles);
+      const c2 = stylish(simpleStyles);
+
+      const styleEls = document.head.querySelectorAll('style');
+      const styleLines = styleEls[0].innerHTML.split('\n');
+      styleLines.length.should.equal(1);
+      styleLines[0].should.equal(`.${c1} { color: red; }`);
+      c1.should.equal(c2); 
+    });
+
+    it('should accept multiple objects to batch generate styles', () => {
+      const classNames = stylish({
+        color: 'red'
+      }, {
+        color: 'blue'
+      });
+
+      classNames.should.be.Array();
+      classNames.length.should.equal(2);
+      const styleEl = document.head.querySelector('style');
+
+      const styleLines = styleEl.innerHTML.split('\n');
+      styleLines.length.should.equal(2);
+      styleLines[0].should.equal(`.${classNames[0]} { color: red; }`);
+      styleLines[1].should.equal(`.${classNames[1]} { color: blue; }`);
+    });
+
+    it('should support camelCase style properties', () => {
+      const className = stylish({
+        backgroundColor: 'tomato',
+        border: '1px solid black',
+        borderLeftColor: 'green'
+      });
+      const styleEl = document.head.querySelector('style');
+      const styleLines = styleEl.innerHTML.split('\n');
+      styleLines.length.should.equal(1);
+      styleLines[0].should.equal(`.${className} { background-color: tomato; border: 1px solid black; border-left-color: green; }`);
+    });
+});
+
+describe('stylish advanced selectors', () => {
 
     it('should create rules for pseudo selectors', () => {
       const className = stylish({
@@ -136,30 +169,23 @@ describe('stylish', () => {
       styleLines[1].should.equal(`.${className} p { color: dodgerblue; }`);
       styleLines[2].should.equal(`.${className} > p { color: crimson; }`);
     });
+});
 
-    it('should support camelCase style properties', () => {
-      const className = stylish({
-        backgroundColor: 'tomato',
-        border: '1px solid black',
-        borderLeftColor: 'green'
-      });
-      const styleEl = document.head.querySelector('style');
-      const styleLines = styleEl.innerHTML.split('\n');
-      styleLines.length.should.equal(1);
-      styleLines[0].should.equal(`.${className} { background-color: tomato; border: 1px solid black; border-left-color: green; }`);
-    });
+describe('stylish utilities', () => {
 
-    it('cache function should return current cache state', () => {
+    it('should return current caches state', () => {
       const c1 = stylish({ color: 'red' });
       const c2 = stylish({ color: 'red' });
       
       Object.keys(stylish.cache()).length.should.equal(1);
+      Object.values(stylish.cache())[0].should.equal(c1);
 
       const c3 = stylish({ color: 'blue' });
       Object.keys(stylish.cache()).length.should.equal(2);
+      Object.values(stylish.cache())[1].should.equal(c3);
     });
 
-   it('clear cache function should reset cache', () => {
+   it('should reset cache when clearCache called', () => {
       const c1 = stylish({ color: 'red' });
       
       Object.keys(stylish.cache()).length.should.equal(1);
@@ -167,22 +193,29 @@ describe('stylish', () => {
 
       Object.keys(stylish.cache()).length.should.equal(0);
     });
+});
 
 
-    it('should accept multiple objects to batch generate styles', () => {
-      const classNames = stylish({
-        color: 'red'
-      }, {
-        color: 'blue'
-      });
+describe('stylish config', () => {
 
-      classNames.should.be.Array();
-      classNames.length.should.equal(2);
-      const styleEl = document.head.querySelector('style');
-
-      const styleLines = styleEl.innerHTML.split('\n');
-      styleLines.length.should.equal(2);
-      styleLines[0].should.equal(`.${classNames[0]} { color: red; }`);
-      styleLines[1].should.equal(`.${classNames[1]} { color: blue; }`);
+  it('should allow stylesheet id to be customized', () => {
+    stylish.setConfig({
+      styleSheetId: 'custom-id'
     });
+  
+    const className = stylish(simpleStyles);
+    const styleEl = document.head.querySelector('style');
+    styleEl.id.should.equal('custom-id');
+  });
+
+  it('should allow class name prefix to be customized', () => {
+    stylish.setConfig({
+      classPrefix: 'custom'
+    });
+  
+    const className = stylish(simpleStyles);
+    className.should.startWith('custom-');
+  });
+
+
 });

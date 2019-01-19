@@ -1,16 +1,16 @@
-const CLASS_PREFIX = 'styled';
-const STYLESHEET_ID = 'styled-sheet';
 import { randId, stringify, hyphenateStyleName, hash } from './utils';
+import { settings, config } from './config';
 
 let cache = {};
 
 function createOrUpdateStyledNode(content) {
-  let el = document.getElementById(STYLESHEET_ID);
+  const { styleSheetId } = settings();
+  let el = document.getElementById(styleSheetId);
   if (el) {
     el.innerHTML = `${el.innerHTML}\n${content}`;
   } else {
     let el = document.createElement("style");
-    el.setAttribute("id", STYLESHEET_ID);
+    el.setAttribute("id", styleSheetId);
     el.innerHTML = content;
     document.head.appendChild(el);
   }
@@ -23,7 +23,7 @@ function generateClass(styles) {
     return { className: cache[hashedStyles] };
   }
 
-  let className = `${CLASS_PREFIX}-${randId()}`;
+  let className = `${settings().classPrefix}-${randId()}`;
   cache[hashedStyles] = className;
 
   function parse(obj) {
@@ -48,8 +48,6 @@ function generateClass(styles) {
     }, [])
   ];
 
-  //createOrUpdateStyledNode(cssRules.join('\n'));
-
   return {
     className,
     cssRules
@@ -58,27 +56,26 @@ function generateClass(styles) {
 
 function stylish(styles) {
    if(arguments.length === 1) {
-      const g = generateClass(styles);
-
-      if(g.cssRules) {
-        createOrUpdateStyledNode(g.cssRules.join('\n'));
+      const { className, cssRules } = generateClass(styles);
+      if(cssRules) {
+        createOrUpdateStyledNode(cssRules.join('\n'));
       }
-
-      return g.className;
+      return className;
    }
 
-   const results = [].reduce.call(arguments, (acc, s) => {
-      const g = generateClass(s);
-      acc.classNames.push(g.className);
-      if(g.cssRules) acc.cssRules.push(g.cssRules);
+   const { classNames, cssRules } = [].reduce.call(arguments, (acc, s) => {
+      const { className, cssRules } = generateClass(s);
+      acc.classNames.push(className);
+      if(cssRules) acc.cssRules.push(cssRules);
       return acc;
    }, { classNames: [], cssRules: []});
 
-   createOrUpdateStyledNode(results.cssRules.join('\n'));
+   createOrUpdateStyledNode(cssRules.join('\n'));
 
-  return results.classNames;
+  return classNames;
 }
 
+stylish.__proto__.setConfig = config;
 stylish.__proto__.cache = () => cache;
 stylish.__proto__.clearCache = () => {
   cache = {};
