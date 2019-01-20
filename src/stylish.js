@@ -57,20 +57,22 @@ function generateClass(styles) {
 function stylish(styles) {
    if(arguments.length === 1) {
       const { className, cssRules } = generateClass(styles);
-      if(cssRules) {
+      if(cssRules && cssRules.length > 0) {
         createOrUpdateStyledNode(cssRules.join('\n'));
       }
       return className;
    }
 
-   const { classNames, cssRules } = [].reduce.call(arguments, (acc, s) => {
-      const { className, cssRules } = generateClass(s);
-      acc.classNames.push(className);
-      if(cssRules) acc.cssRules.push(cssRules);
-      return acc;
-   }, { classNames: [], cssRules: []});
+  const { classNames, cssRules } = [].reduce.call(arguments, (acc, s) => {
+    const { className, cssRules } = generateClass(s);
+    acc.classNames.push(className);
+    if(cssRules) acc.cssRules.push(cssRules);
+    return acc;
+  }, { classNames: [], cssRules: []});
 
-   createOrUpdateStyledNode(cssRules.join('\n'));
+  if(cssRules.length > 0) {
+    createOrUpdateStyledNode(cssRules.join('\n'));
+  }
 
   return classNames;
 }
