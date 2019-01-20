@@ -69,7 +69,7 @@ const multiple = stylish({ color: 'red' }, { color: 'blue' }) // -> [ "stylish-<
 
 stylish also allows for it's settings to be customized by exporting a single function for this. *settings must be overridden before any calls to `stylish` are made.*
 
-```
+```javascript
 stylish.config({
   stylesheetId: 'custom-id', //The id assigned to the stylesheet created
   classPrefix: 'custom-prefix', // The prefix that will be used for generated class names
