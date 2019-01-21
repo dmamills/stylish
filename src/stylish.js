@@ -1,4 +1,4 @@
-import { randId, stringify, hyphenateStyleName, hash } from './utils';
+import { stringify, hyphenateStyleName, isKeyframes } from './utils';
 import { settings, config } from './config';
 
 let cache = {};
@@ -15,7 +15,28 @@ function createOrUpdateStyledNode(content) {
     document.head.appendChild(el);
   }
 }
+
+function keyframes(className, styles) {
+  const base = `@keyframes ${className} {`;
+  const end = `}`
+
+   const timings = Object.keys(styles).map(timing => {
+    const timingValues = styles[timing];
+    const timingStyles = Object.keys(timingValues).map(timingStyle => {
+      return `${hyphenateStyleName(timingStyle)}: ${timingValues[timingStyle]};`;
+    });
+    return `${timing} { ${timingStyles.join(' ')} }`
+  });
+
+  const rule = `${base} ${timings.join(' ')} ${end}`;
+  return {
+    className,
+    cssRules: [ rule ]
+  };
+}
+
 function generateClass(styles) {
+  const { hash, id, classPrefix } = settings();
   let psuedoStyles = {};
   let hashedStyles = hash(JSON.stringify(styles));
 
@@ -23,8 +44,13 @@ function generateClass(styles) {
     return { className: cache[hashedStyles] };
   }
 
-  let className = `${settings().classPrefix}-${randId()}`;
+  let className = `${classPrefix}-${id()}`;
   cache[hashedStyles] = className;
+
+  const rootKeys = Object.keys(styles);
+  if(rootKeys.length == 1 && isKeyframes(rootKeys[0])) {
+    return keyframes(className, styles[rootKeys[0]]);
+  }
 
   function parse(obj) {
     return Object.keys(obj).reduce((acc, k) => {

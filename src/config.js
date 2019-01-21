@@ -1,16 +1,19 @@
+import { hash, id } from './utils';
+
 const DEFAULT_OPTIONS = {
   classPrefix: 'stylish',
-  stylesheetId: 'stylish-sheet'
+  styleSheetId: 'stylish-sheet',
+  id,
+  hash
 };
 
-let currentSettings = {
-  classPrefix: DEFAULT_OPTIONS.classPrefix,
-  styleSheetId: DEFAULT_OPTIONS.stylesheetId
-}
+let currentSettings = {};
 
 function config(options) {
   currentSettings = Object.assign({}, DEFAULT_OPTIONS, options);
 }
+
+config();
 
 const settings = () => currentSettings;
 

@@ -1,7 +1,8 @@
 const UPPERCASE_REGEX = /([A-Z])/g;
 const MS_REGEX = /^ms-/;
+const KEYFRAMES_REGEX = /^@keyframes/;
 
-const randId = () => {
+const id = () => {
   return Math.random()
     .toString(36)
     .substring(7);
@@ -30,9 +31,14 @@ const hash = (str) => {
   return hash;
 };
 
+const isKeyframes = (str) => {
+  return KEYFRAMES_REGEX.test(str);
+}
+
 export {
-  randId,
+  id,
   stringify,
   hyphenateStyleName,
-  hash
+  hash,
+  isKeyframes
 };

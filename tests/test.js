@@ -16,6 +16,13 @@ const simpleStyles = {
   color: 'red'
 }
 
+const keyframeStyles = {
+  '@keyframes': {
+    from: { backgroundColor: 'red' },
+    to: { backgroundColor: 'yellow' },
+  }
+};
+
 describe('stylish', () => {
 
     it('should should have expected functions', () => {
@@ -171,6 +178,56 @@ describe('stylish advanced selectors', () => {
     });
 });
 
+describe('stylish keyframes', () => {
+
+  it('should support keyframes using short hand', () => {
+    const className = stylish(keyframeStyles);
+    const expected = `@keyframes ${className} { from { background-color: red; } to { background-color: yellow; } }`
+    
+    const styleEls = document.head.querySelectorAll('style');
+    const styleLines = styleEls[0].innerHTML.split('\n');
+    styleLines.length.should.equal(1);
+    styleLines[0].should.equal(expected);
+  });
+
+  it('should support keyframes using percentages', () => {
+    const className = stylish({
+      '@keyframes': {
+        '0%': { color: 'red' },
+        '15%': { color: 'orange' },
+        '55%': { color: 'yellow' },
+        '100%': { color: 'green' },
+      }
+    });
+    const expected = `@keyframes ${className} { 0% { color: red; } 15% { color: orange; } 55% { color: yellow; } 100% { color: green; } }`
+    
+    const styleEls = document.head.querySelectorAll('style');
+    const styleLines = styleEls[0].innerHTML.split('\n');
+    styleLines.length.should.equal(1);
+    styleLines[0].should.equal(expected);
+  });
+
+  it('should create multiple keyframes', () => {
+    const [ c1, c2 ] = stylish(keyframeStyles, {
+      '@keyframes': {
+        '0%': { color: 'red' },
+        '15%': { color: 'orange' },
+        '55%': { color: 'yellow' },
+        '100%': { color: 'green' },
+      }
+    });
+
+    const expected1 = `@keyframes ${c1} { from { background-color: red; } to { background-color: yellow; } }`
+    const expected2 = `@keyframes ${c2} { 0% { color: red; } 15% { color: orange; } 55% { color: yellow; } 100% { color: green; } }`
+
+    const styleEls = document.head.querySelectorAll('style');
+    const styleLines = styleEls[0].innerHTML.split('\n');
+    styleLines.length.should.equal(2);
+    styleLines[0].should.equal(expected1);
+    styleLines[1].should.equal(expected2);
+  });
+});
+
 describe('stylish utilities', () => {
 
     it('should return current caches state', () => {
@@ -187,7 +244,7 @@ describe('stylish utilities', () => {
 
    it('should reset cache when clearCache called', () => {
       const c1 = stylish({ color: 'red' });
-      
+
       Object.keys(stylish.cache()).length.should.equal(1);
       stylish.clearCache();
 
@@ -202,7 +259,7 @@ describe('stylish config', () => {
     stylish.setConfig({
       styleSheetId: 'custom-id'
     });
-  
+
     const className = stylish(simpleStyles);
     const styleEl = document.head.querySelector('style');
     styleEl.id.should.equal('custom-id');
@@ -212,10 +269,23 @@ describe('stylish config', () => {
     stylish.setConfig({
       classPrefix: 'custom'
     });
-  
+
     const className = stylish(simpleStyles);
     className.should.startWith('custom-');
   });
 
+  it('should allow for id generation to be customize', () => {
+    stylish.setConfig({
+      id: (() => {
+        let i = 1;
+        return () => i++;
+      })()
+    });
 
+      const c1 = stylish(simpleStyles);
+      const c2 = stylish({ color: 'blue' });
+      c1.should.equal('stylish-1');
+      c2.should.equal('stylish-2');
+  });
 });
+

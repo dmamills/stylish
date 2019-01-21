@@ -62,10 +62,14 @@ Vue.component('some-component', {
 
 stylish exposes a single function that returns the generated class names. it is a variadic function that can take any number of style objects and will batch create them.
 
+### main usage
+
 ```javascript
 const single = stylish({ color: 'red' }) // -> "stylish-<id>"
 const multiple = stylish({ color: 'red' }, { color: 'blue' }) // -> [ "stylish-<id>", "stylish-<id>" ]
 ```
+
+### configuration
 
 stylish also allows for it's settings to be customized by exporting a single function for this. *settings must be overridden before any calls to `stylish` are made.*
 
@@ -73,8 +77,26 @@ stylish also allows for it's settings to be customized by exporting a single fun
 stylish.config({
   stylesheetId: 'custom-id', //The id assigned to the stylesheet created
   classPrefix: 'custom-prefix', // The prefix that will be used for generated class names
+  id: () => {} // function for randomly generating the class ids: <classPrefix>-<id()>
 });
 ```
+
+an example of an overriding the id function:
+
+```javascript
+const id = (() => {
+  let i = 1;
+  return () => i++;
+})()
+stylish.config({
+  id: id
+});
+
+const c1 = stylish({ color: 'red' }) // => "stylish-1"
+const c2 = stylish({ color: 'blue' }) // => "stylish-2"
+```
+
+### cache
 
 stylish also maintains an internal cache to prevent duplication of classes. when stylish is invoked, the style object is stringifed, and then a hash code is generated from that string.
 
