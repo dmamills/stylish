@@ -1,5 +1,6 @@
 import { stringify, hyphenateStyleName, isKeyframes } from './utils';
 import { settings, config } from './config';
+const keys = Object.keys;
 
 let cache = {};
 
@@ -18,20 +19,17 @@ function createOrUpdateStyledNode(content) {
 
 function keyframes(className, styles) {
   const base = `@keyframes ${className} {`;
-  const end = `}`
-
-   const timings = Object.keys(styles).map(timing => {
+  const timings = keys(styles).map(timing => {
     const timingValues = styles[timing];
-    const timingStyles = Object.keys(timingValues).map(timingStyle => {
+    const timingStyles = keys(timingValues).map(timingStyle => {
       return `${hyphenateStyleName(timingStyle)}: ${timingValues[timingStyle]};`;
     });
     return `${timing} { ${timingStyles.join(' ')} }`
   });
 
-  const rule = `${base} ${timings.join(' ')} ${end}`;
   return {
     className,
-    cssRules: [ rule ]
+    cssRules: [ `${base} ${timings.join(' ')} }` ]
   };
 }
 
@@ -47,13 +45,13 @@ function generateClass(styles) {
   let className = `${classPrefix}-${id()}`;
   cache[hashedStyles] = className;
 
-  const rootKeys = Object.keys(styles);
+  const rootKeys = keys(styles);
   if(rootKeys.length == 1 && isKeyframes(rootKeys[0])) {
     return keyframes(className, styles[rootKeys[0]]);
   }
 
   function parse(obj) {
-    return Object.keys(obj).reduce((acc, k) => {
+    return keys(obj).reduce((acc, k) => {
       if (typeof obj[k] === "string") {
         acc.push(`${hyphenateStyleName(k)}: ${obj[k]};`);
       } else {
@@ -67,7 +65,7 @@ function generateClass(styles) {
   const selector = `.${className}`;
   const cssRules = [
     stringify(selector, mainStyles),
-    ...Object.keys(psuedoStyles).reduce((acc, pseudoSelector) => {
+    ...keys(psuedoStyles).reduce((acc, pseudoSelector) => {
       let sel = `${selector}${pseudoSelector}`;
       acc.push(stringify(sel, psuedoStyles[pseudoSelector]));
       return acc;
@@ -96,7 +94,7 @@ function stylish(styles) {
     return acc;
   }, { classNames: [], cssRules: []});
 
-  if(cssRules.length > 0) {
+  if(cssRules.length) {
     createOrUpdateStyledNode(cssRules.join('\n'));
   }
 

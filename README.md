@@ -69,6 +69,28 @@ const single = stylish({ color: 'red' }) // -> "stylish-<id>"
 const multiple = stylish({ color: 'red' }, { color: 'blue' }) // -> [ "stylish-<id>", "stylish-<id>" ]
 ```
 
+### animations
+
+stylish will allow you to create keyframes for animation. you simply need to declare the keyframe first and reference the generated animation name in your future styles.
+
+```javascript
+
+const animation = stylish({
+  '@keyframes': {
+    '0%': { transform: "scale(0.5)" },
+    '100%': { transform: "scale(1.5)" }
+  }
+})
+
+const box = stylish({
+  width: '20px',
+  height: '20px',
+  backgroundColor: 'red',
+  animation: `${animation} 1s infinite`
+});
+
+```
+
 ### configuration
 
 stylish also allows for it's settings to be customized by exporting a single function for this. *settings must be overridden before any calls to `stylish` are made.*
