@@ -176,6 +176,21 @@ describe('stylish advanced selectors', () => {
       styleLines[1].should.equal(`.${className} p { color: dodgerblue; }`);
       styleLines[2].should.equal(`.${className} > p { color: crimson; }`);
     });
+
+   // it('should create psuedo selectors for varadic calls', () => {
+   //   const [c1, c2] = stylish({ color: 'red' }, {
+   //     color: 'blue',
+   //     ':hover': {
+   //       color: 'yellow'
+   //     }
+   //   });
+   //   const styleEl = document.head.querySelector('style');
+   //   const styleLines = styleEl.innerHTML.split('\n');
+   //   console.log(styleLines);
+   //   styleLines.length.should.equal(3);
+   //   styleLines[1].should.equal(`.${c2} { color: blue; }`);
+   //   styleLines[2].should.equal(`.${c2}:hover { color: yellow; }`);
+   // });
 });
 
 describe('stylish keyframes', () => {
@@ -228,6 +243,37 @@ describe('stylish keyframes', () => {
   });
 });
 
+describe('stylish raw insert', () => {
+
+  const expected1 = ' body { color: red; } article { font-size: 1.6rem; } ';
+  const expected2 = ' @media screen and (max-width: 600px){ article { flex-direction: column; } } ';
+
+  it('should insert raw css', () => {
+    stylish.raw(`
+      body {
+        color: red;
+      }
+      article {
+        font-size: 1.6rem;
+      }
+    `);
+
+    stylish.raw(`
+      @media screen and (max-width: 600px){
+        article {
+          flex-direction: column;
+        }
+      }
+    `)
+
+    const styleEls = document.head.querySelectorAll('style');
+    const styleLines = styleEls[0].innerHTML.split('\n');
+    styleLines[0].should.equal(expected1);
+    styleLines[1].should.equal(expected2);
+    styleLines.length.should.equal(2);
+  });
+});
+
 describe('stylish utilities', () => {
 
     it('should return current caches state', () => {
@@ -251,7 +297,6 @@ describe('stylish utilities', () => {
       Object.keys(stylish.cache()).length.should.equal(0);
     });
 });
-
 
 describe('stylish config', () => {
 

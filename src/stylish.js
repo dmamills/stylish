@@ -78,6 +78,11 @@ function generateClass(styles) {
   };
 }
 
+function raw(str) {
+  str = str.replace(/\s+/g, " ");
+  createOrUpdateStyledNode(str);
+}
+
 function stylish(styles) {
    if(arguments.length === 1) {
       const { className, cssRules } = generateClass(styles);
@@ -101,6 +106,7 @@ function stylish(styles) {
   return classNames;
 }
 
+stylish.__proto__.raw = raw;
 stylish.__proto__.setConfig = config;
 stylish.__proto__.cache = () => cache;
 stylish.__proto__.clearCache = () => {

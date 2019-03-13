@@ -91,6 +91,18 @@ const box = stylish({
 
 ```
 
+### raw css
+
+stylish also exposes a simple function for adding raw css to the stylesheet
+
+```javascript
+stylish.raw(`
+  body {
+    color: red;
+  }
+`);
+```
+
 ### configuration
 
 stylish also allows for it's settings to be customized by exporting a single function for this. *settings must be overridden before any calls to `stylish` are made.*
