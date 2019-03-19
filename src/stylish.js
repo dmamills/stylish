@@ -95,7 +95,9 @@ function stylish(styles) {
   const { classNames, cssRules } = [].reduce.call(arguments, (acc, s) => {
     const { className, cssRules } = generateClass(s);
     acc.classNames.push(className);
-    if(cssRules) acc.cssRules.push(cssRules);
+    if(cssRules) {
+      acc.cssRules.push(...cssRules);
+    }
     return acc;
   }, { classNames: [], cssRules: []});
 

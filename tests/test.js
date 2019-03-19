@@ -109,8 +109,8 @@ describe('stylish', () => {
     });
 });
 
-describe('stylish advanced selectors', () => {
 
+describe('stylish advanced selectors', () => {
     it('should create rules for pseudo selectors', () => {
       const className = stylish({
         color: 'red',
@@ -177,21 +177,29 @@ describe('stylish advanced selectors', () => {
       styleLines[2].should.equal(`.${className} > p { color: crimson; }`);
     });
 
-   // it('should create psuedo selectors for varadic calls', () => {
-   //   const [c1, c2] = stylish({ color: 'red' }, {
-   //     color: 'blue',
-   //     ':hover': {
-   //       color: 'yellow'
-   //     }
-   //   });
-   //   const styleEl = document.head.querySelector('style');
-   //   const styleLines = styleEl.innerHTML.split('\n');
-   //   console.log(styleLines);
-   //   styleLines.length.should.equal(3);
-   //   styleLines[1].should.equal(`.${c2} { color: blue; }`);
-   //   styleLines[2].should.equal(`.${c2}:hover { color: yellow; }`);
-   // });
+    it('should create psuedo selectors for varadic calls', () => {
+      const [c1, c2, c3] = stylish({ color: 'red' }, {
+        color: 'blue',
+        ':hover': {
+          color: 'yellow'
+        }
+      }, {
+        color: 'green',
+        ':hover': {
+          color: 'yellow'
+        }
+      });
+      const styleEl = document.head.querySelector('style');
+      const styleLines = styleEl.innerHTML.split('\n');
+      styleLines.length.should.equal(5);
+      styleLines[1].should.equal(`.${c2} { color: blue; }`);
+      styleLines[2].should.equal(`.${c2}:hover { color: yellow; }`);
+      styleLines[3].should.equal(`.${c3} { color: green; }`);
+      styleLines[4].should.equal(`.${c3}:hover { color: yellow; }`);
+
+    });
 });
+
 
 describe('stylish keyframes', () => {
 
@@ -333,4 +341,3 @@ describe('stylish config', () => {
       c2.should.equal('stylish-2');
   });
 });
-
