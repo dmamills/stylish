@@ -1,7 +1,7 @@
 {
   "name": "@dmamills/stylish",
-  "version": "1.2.0",
-  "description": "inline styles, kinda",
+  "version": "1.2.1",
+  "description": "a lightweight css-in-js solution",
   "main": "index.js",
   "keywords": [
     "css",

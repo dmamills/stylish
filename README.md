@@ -2,14 +2,19 @@
 
 [![codecov.io](https://codecov.io/github/dmamills/stylish/coverage.svg?branch=master)](https://codecov.io/github/dmamills/stylish?branch=master) [![Build Status](https://secure.travis-ci.org/dmamills/stylish.png)](http://travis-ci.org/dmamills/stylish)
 
-A strange but straightforward way to write inline styles.
-Can be used with React, almost like you would with the `style` attribute.
-Stylish improves on inline styles by allowing you to use `:pseudo`, ` + sibling`, and other more complex selectors.
+Stylish is a lightweight framework to write css-in-js. It's completely framework agnostic and provides the flexibility of using javascript objects without comprimising your ability to use `:pseudo`, ` + sibling`, and other more complex selectors.
 
-## Usage
+## How it works
 
-### React
-```jsx
+Stylish maintains a single stylesheet, which it adds to your document's `head`.
+When Stylish is invoked, it parses the provided styles and converts the object to CSS rules.
+Those rules are then appended to the generated stylesheet.
+The class name returned from the function can then be used on any DOM element.
+Stylish is completey framework agnostic.
+
+## Basic Example
+
+```javascript
 import stylish from '@dmamills/stylish';
 
 const className = stylish({
@@ -24,57 +29,26 @@ const className = stylish({
   }
 });
 
-function SomeComponent() {
-  return (
-    <div className={className}>
-      <h1>I'm styled!</h1>
-    </div>
-  );
-}
-```
-
-### Vue
-```js
-import stylish from '@dmamills/stylish';
-
-const className = stylish({
-  backgroundColor: 'tomato',
-  border: '1px solid tomato'
-  ':hover': {
-    backgroundColor: 'white',
-    color: 'white'
-  },
-  '> h1': {
-    color: 'dodgerblue'
-  }
-});
-
-Vue.component('some-component', {
-  template: `
-    <div class="${className}">
-      <h1>I'm styled!</h1>
-    </div>
-  `
-});
+const el = document.createElement('div');
+el.classList.add(className);
 ```
 
 ## API
 
-stylish exposes a single function that returns the generated class names. it is a variadic function that can take any number of style objects and will batch create them.
+Stylish's main function returns the generated class name(s). It is a variadic function that can take any number of style objects and will batch create them.
 
 ### main usage
 
 ```javascript
-const single = stylish({ color: 'red' }) // -> "stylish-<id>"
-const multiple = stylish({ color: 'red' }, { color: 'blue' }) // -> [ "stylish-<id>", "stylish-<id>" ]
+const redText = stylish({ color: 'red' }) // -> "stylish-<id>"
+const [ redText, blueText ] = stylish({ color: 'red' }, { color: 'blue' }) // -> [ "stylish-<id>", "stylish-<id>" ]
 ```
 
 ### animations
 
-stylish will allow you to create keyframes for animation. you simply need to declare the keyframe first and reference the generated animation name in your future styles.
+Stylish can be used to create keyframes for animation. You simply need to declare the keyframe first and reference the generated animation name in your future styles.
 
 ```javascript
-
 const animation = stylish({
   '@keyframes': {
     '0%': { transform: "scale(0.5)" },
@@ -93,7 +67,7 @@ const box = stylish({
 
 ### raw css
 
-stylish also exposes a simple function for adding raw css to the stylesheet
+Stylish also exposes a simple function for adding raw css to the stylesheet
 
 ```javascript
 stylish.raw(`
@@ -105,7 +79,7 @@ stylish.raw(`
 
 ### configuration
 
-stylish also allows for it's settings to be customized by exporting a single function for this. *settings must be overridden before any calls to `stylish` are made.*
+Stylish also allows for it's settings to be customized by exporting a single function for this. *settings must be overridden before any calls to `stylish` are made.*
 
 ```javascript
 stylish.config({
@@ -132,7 +106,7 @@ const c2 = stylish({ color: 'blue' }) // => "stylish-2"
 
 ### cache
 
-stylish also maintains an internal cache to prevent duplication of classes. when stylish is invoked, the style object is stringifed, and then a hash code is generated from that string.
+Stylish also maintains an internal cache to prevent duplication of classes. when Stylish is invoked, the style object is stringifed, and then a hash code is generated from that string.
 
 there are two helper functions exposed that deal with this cache. They are mostly used internally for testing.
 
@@ -140,14 +114,6 @@ there are two helper functions exposed that deal with this cache. They are mostl
 stylish.cache() // => { } returns cache object
 stylish.clearCache() // => will reset the internal cache
 ```
-
-## How it works
-
-Stylish maintains a single stylesheet, which it adds to your document's `head`.
-When Stylish is invoked, it parses the provided styles and converts the object to CSS rules.
-Those rules are then appended to the generated stylesheet.
-The class name returned from the function can then be used on any DOM element.
-Stylish is completey framework agnostic.
 
 ## Dev
 
