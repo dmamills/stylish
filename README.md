@@ -2,7 +2,7 @@
 
 [![codecov.io](https://codecov.io/github/dmamills/stylish/coverage.svg?branch=master)](https://codecov.io/github/dmamills/stylish?branch=master) [![Build Status](https://secure.travis-ci.org/dmamills/stylish.png)](http://travis-ci.org/dmamills/stylish)
 
-Stylish is a lightweight framework to write css-in-js. It's completely framework agnostic and provides the flexibility of using javascript objects without comprimising your ability to use `:pseudo`, ` + sibling`, and other more complex selectors.
+Stylish is a lightweight framework for writing css-in-js. It's completely framework agnostic and provides the flexibility of using javascript objects without comprimising your ability to use `:pseudo`, ` + sibling`, and other more complex selectors.
 
 ## How it works
 
