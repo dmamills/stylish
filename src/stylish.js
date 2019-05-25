@@ -3,6 +3,7 @@ import { settings, config } from './config';
 const keys = Object.keys;
 
 let cache = {};
+let theme = {};
 
 function createOrUpdateStyledNode(content) {
   const { styleSheetId } = settings();
@@ -85,6 +86,13 @@ function raw(str) {
 
 function stylish(styles) {
    if(arguments.length === 1) {
+      if(typeof styles === 'function') {
+        styles = styles(theme);
+        if(Array.isArray(styles)) {
+          return stylish(...styles);
+        }
+      }
+
       const { className, cssRules } = generateClass(styles);
       if(cssRules && cssRules.length > 0) {
         createOrUpdateStyledNode(cssRules.join('\n'));
@@ -111,8 +119,9 @@ function stylish(styles) {
 stylish.__proto__.raw = raw;
 stylish.__proto__.setConfig = config;
 stylish.__proto__.cache = () => cache;
-stylish.__proto__.clearCache = () => {
-  cache = {};
-}
+stylish.__proto__.theme = () => theme;
+stylish.__proto__.clearCache = () => { cache = {}; }
+stylish.__proto__.clearTheme = () => { theme = {}; }
+stylish.__proto__.createTheme = newTheme => { theme = newTheme; }
 
 export default stylish;

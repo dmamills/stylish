@@ -29,5 +29,17 @@ describe('stylish utilities', () => {
 
       Object.keys(stylish.cache()).length.should.equal(0);
     });
+
+    it('should return current themes state', () => {
+      stylish.createTheme({ brandColor: 'red'});
+      stylish.theme().should.deepEqual({ brandColor: 'red' });
+    });
+
+    it('should reset theme when clearTheme called', () => {
+      stylish.createTheme({ brandColor: 'red' });
+      stylish.theme().should.deepEqual({ brandColor: 'red' });
+      stylish.clearTheme();
+      stylish.theme().should.deepEqual({});
+    });
 });
 
