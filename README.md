@@ -77,6 +77,24 @@ stylish.raw(`
 `);
 ```
 
+### themes
+
+stylish has a function for setting theme variables. Which can be exposed by passing a function to stylish.
+
+```javascript
+stylish.createTheme(() => ({
+  brandColor: '#1abc9c',
+  font: { large: '2rem', small: '0.8rem' }
+}));
+
+const [ headerFont, accentFont ] = stylish(({ brandColor, font }) => [
+  { color: brandColor, fontSize: font.large },
+  { color: brandColor, fontSize: font.small },
+]);
+```
+
+The theme can be removed using `stylish.clearTheme()` or replaced by invoking `stylish.createTheme({})` again.
+
 ### configuration
 
 Stylish also allows for it's settings to be customized by exporting a single function for this. *settings must be overridden before any calls to `stylish` are made.*
