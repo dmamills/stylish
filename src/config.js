@@ -9,6 +9,12 @@ const DEFAULT_OPTIONS = {
 
 let currentSettings = {};
 
+/**
+* Sets the stylish configuration object
+* @tutorial config 
+* @param {Object} options
+* @memberof stylish
+*/
 function config(options) {
   currentSettings = Object.assign({}, DEFAULT_OPTIONS, options);
 }
