@@ -11,7 +11,7 @@ let currentSettings = {};
 
 /**
 * Sets the stylish configuration object
-* @tutorial config 
+* @tutorial config
 * @param {Object} options
 * @memberof stylish
 */
@@ -26,4 +26,4 @@ const settings = () => currentSettings;
 export {
   settings,
   config
-} 
+};
