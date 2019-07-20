@@ -1,0 +1,8 @@
+{
+  "templates": {
+    "systemName"            : "stylish",
+    "navType"               : "vertical",
+    "theme"                 : "simplex"
+  }
+
+}
