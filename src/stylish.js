@@ -93,7 +93,8 @@ function raw(str) {
 /**
 * The main stylish function
 * @class
-* @tutorial main usage
+* @tutorial main-usage
+* @tutorial advanced-usage
 * @tutorial animations
 * @tutorial theme
 * @param styles {Object|Array|Function} styles

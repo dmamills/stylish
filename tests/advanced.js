@@ -101,7 +101,7 @@ describe('stylish advanced selectors', () => {
     });
 
 
-    it('should nest infinite', () => {
+    it('should nest multiple', () => {
         const c1 = stylish({
             color: 'red',
             ' > p': {
@@ -114,7 +114,6 @@ describe('stylish advanced selectors', () => {
         const styleEl = document.head.querySelector('style');
         const styleLines = styleEl.innerHTML.split('\n');
         styleLines.length.should.equal(3);
-        console.log(styleLines);
         styleLines[0].should.equal(`.${c1} { color: red; }`);
         styleLines[1].should.equal(`.${c1} > p > strong { color: yellow; }`);
         styleLines[2].should.equal(`.${c1} > p { color: blue; }`);
@@ -137,7 +136,6 @@ describe('stylish advanced selectors', () => {
         const styleEl = document.head.querySelector('style');
         const styleLines = styleEl.innerHTML.split('\n');
         styleLines.length.should.equal(4);
-        console.log(styleLines);
         styleLines[0].should.equal(`.${c1} { color: red; }`);
         styleLines[1].should.equal(`.${c1} > p > strong + span { font-size: 1.5rem; }`);
         styleLines[2].should.equal(`.${c1} > p > strong { color: yellow; }`);
