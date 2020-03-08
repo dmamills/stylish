@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>config.js - Documentation</title>
+    <title>Tutorial: advanced selectors - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -32,51 +32,76 @@
 
 <div id="main">
     
-    <h1 class="page-title">config.js</h1>
+    <h1 class="page-title">Tutorial: advanced selectors</h1>
     
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import { hash, id } from './utils';
 
-const DEFAULT_OPTIONS = {
-  classPrefix: 'stylish',
-  styleSheetId: 'stylish-sheet',
-  id,
-  hash
-};
+<header>
+    
 
-let currentSettings = {};
+    <h2>advanced selectors</h2>
+</header>
 
-/**
-* Sets the stylish configuration object
-* @tutorial config
-* @param {Object} options
-* @memberof stylish
+<article>
+    <p>the basic examples page showcases something you can accomplish with just inline styles, what makes stylish very handy is that you are able to use psuedo, sibling, and nested selectors.</p>
+<h2>pseudo</h2>
+<pre class="prettyprint source lang-javascript"><code>
+const linkText = stylish({
+  color: 'blue',
+  ':hover': {
+    color: 'darkblue'
+  }
+}); // => 'stylish-xxxx'
+
+
+/*
+* generates:
+ .stylish-xxxx { color: blue; }
+ .stylish-xxxx:hover { color: darkblue; }
 */
-function config(options) {
-  currentSettings = Object.assign({}, DEFAULT_OPTIONS, options);
-}
 
-config();
-
-const settings = () => currentSettings;
-
-export {
-  settings,
-  config
-};
 </code></pre>
-        </article>
-    </section>
+<h2>sibling</h2>
+<pre class="prettyprint source lang-javascript"><code>
+const blueParagraphs = stylish({
+  color: 'blue',
+  ' + p': {
+    color: 'darkblue'
+  }
+}); // => 'stylish-xxxx'
 
+/*
+* generates:
+ .stylish-xxxx { color: blue; }
+ .stylish-xxxx + p { color: darkblue; }
+*/
 
+</code></pre>
+<h2>nesting</h2>
+<pre class="prettyprint source lang-javascript"><code>
+const blueParagraphs = stylish({
+  color: 'blue',
+  ':hover': {
+    color: 'darkblue',
+    ' > strong': {
+      fontSize: '2rem';
+    }
+  }
+}); // => 'stylish-xxxx'
+`
+/*
+* generates:
+ .stylish-xxxx { color: blue; }
+ .stylish-xxxx:hover > strong { font-size: 2rem; }
+ .stylish-xxxx:hover { color: darkblue; }
+*/
+);
 
+</code></pre>
+</article>
+
+</section>
 
     
     

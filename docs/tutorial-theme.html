@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>config.js - Documentation</title>
+    <title>Tutorial: theme options - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -32,51 +32,33 @@
 
 <div id="main">
     
-    <h1 class="page-title">config.js</h1>
+    <h1 class="page-title">Tutorial: theme options</h1>
     
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import { hash, id } from './utils';
 
-const DEFAULT_OPTIONS = {
-  classPrefix: 'stylish',
-  styleSheetId: 'stylish-sheet',
-  id,
-  hash
-};
+<header>
+    
 
-let currentSettings = {};
+    <h2>theme options</h2>
+</header>
 
-/**
-* Sets the stylish configuration object
-* @tutorial config
-* @param {Object} options
-* @memberof stylish
-*/
-function config(options) {
-  currentSettings = Object.assign({}, DEFAULT_OPTIONS, options);
-}
+<article>
+    <p>stylish has a function for setting theme variables. which can be exposed by passing a function to stylish.</p>
+<pre class="prettyprint source lang-javascript"><code>stylish.createTheme(() => ({
+  brandColor: '#1abc9c',
+  font: { large: '2rem', small: '0.8rem' }
+}));
 
-config();
-
-const settings = () => currentSettings;
-
-export {
-  settings,
-  config
-};
+const [ headerFont, accentFont ] = stylish(({ brandColor, font }) => [
+  { color: brandColor, fontSize: font.large },
+  { color: brandColor, fontSize: font.small },
+]);
 </code></pre>
-        </article>
-    </section>
+<p>the theme can be removed using <code>stylish.clearTheme()</code> or replaced by invoking <code>stylish.createTheme({})</code> again.</p>
+</article>
 
-
-
+</section>
 
     
     

@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>config.js - Documentation</title>
+    <title>Tutorial: basic usage - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -32,51 +32,34 @@
 
 <div id="main">
     
-    <h1 class="page-title">config.js</h1>
+    <h1 class="page-title">Tutorial: basic usage</h1>
     
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import { hash, id } from './utils';
 
-const DEFAULT_OPTIONS = {
-  classPrefix: 'stylish',
-  styleSheetId: 'stylish-sheet',
-  id,
-  hash
-};
+<header>
+    
 
-let currentSettings = {};
+    <h2>basic usage</h2>
+</header>
 
-/**
-* Sets the stylish configuration object
-* @tutorial config
-* @param {Object} options
-* @memberof stylish
-*/
-function config(options) {
-  currentSettings = Object.assign({}, DEFAULT_OPTIONS, options);
-}
+<article>
+    <p>stylish's main function returns the generated class name(s).</p>
+<p>It is a variadic function that can take any number of style objects and will batch create them.</p>
+<p>It will also accept a function, which recieves a theme object arguement for more information about themes see <a href="tutorial-theme.html">theme options</a></p>
+<pre class="prettyprint source lang-javascript"><code>const redText = stylish({ color: 'red' }); // -> &quot;stylish-&lt;id>&quot;
 
-config();
+const [ redText, blueText ] = stylish({
+  color: 'red'
+}, {
+  color: 'blue'
+}); // -> [ &quot;stylish-&lt;id>&quot;, &quot;stylish-&lt;id>&quot; ]
 
-const settings = () => currentSettings;
-
-export {
-  settings,
-  config
-};
+const greenText = stylish((theme) => { color: theme.brandGreen }); // -> &quot;stylish-&lt;id>&quot;
 </code></pre>
-        </article>
-    </section>
+</article>
 
-
-
+</section>
 
     
     
