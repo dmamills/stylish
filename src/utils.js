@@ -6,18 +6,18 @@ const id = () => {
   return Math.random()
     .toString(36)
     .substring(7);
-}
+};
 
 const stringify = (selector, arr) => {
   return `${selector} { ${arr.join(" ")} }`;
-}
+};
 
 const hyphenateStyleName = (name) => {
   return name
     .replace(UPPERCASE_REGEX, '-$1')
     .toLowerCase()
     .replace(MS_REGEX, '-ms-');
-}
+};
 
 const hash = (str) => {
   var hash = 0, i, chr;
@@ -33,7 +33,7 @@ const hash = (str) => {
 
 const isKeyframes = (str) => {
   return KEYFRAMES_REGEX.test(str);
-}
+};
 
 export {
   id,

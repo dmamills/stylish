@@ -13,6 +13,6 @@ const [ redText, blueText ] = stylish({
   color: 'blue'
 }); // -> [ "stylish-<id>", "stylish-<id>" ]
 
-const greenText = stylish(() => { color: 'green' }); // -> "stylish-<id>"
+const greenText = stylish((theme) => { color: theme.brandGreen }); // -> "stylish-<id>"
 ```
 

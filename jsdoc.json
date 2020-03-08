@@ -1,8 +1,11 @@
 {
-  "templates": {
-    "systemName"            : "stylish",
-    "navType"               : "vertical",
-    "theme"                 : "simplex"
-  }
-
+    "search": false,
+    "meta": {
+        "title": "stylish.js",
+        "description": "lightweight css-in-js",
+        "keyword": "css javascript css-in-js npm"
+    },
+    "opts": {
+        "template": "node_modules/docdash"
+    }
 }

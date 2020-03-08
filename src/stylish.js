@@ -51,12 +51,12 @@ function generateClass(styles) {
     return keyframes(className, styles[rootKeys[0]]);
   }
 
-  function parse(obj) {
+    function parse(obj, root = '') {
     return keys(obj).reduce((acc, k) => {
       if (typeof obj[k] === "string") {
-        acc.push(`${hyphenateStyleName(k)}: ${obj[k]};`);
+        acc.push(`${hyphenateStyleName(k)}:`, `${obj[k]};`);
       } else {
-        psuedoStyles[k] = parse(obj[k]);
+        psuedoStyles[`${root}${k}`] = parse(obj[k], `${root}${k}`);
       }
       return acc;
     }, []);
@@ -81,7 +81,7 @@ function generateClass(styles) {
 
 /**
 * Adds raw css to the stylesheet
-* @tutorial raw 
+* @tutorial raw
 * @param {string} str
 * @memberof stylish
 */
@@ -93,7 +93,8 @@ function raw(str) {
 /**
 * The main stylish function
 * @class
-* @tutorial main usage
+* @tutorial main-usage
+* @tutorial advanced-usage
 * @tutorial animations
 * @tutorial theme
 * @param styles {Object|Array|Function} styles
@@ -133,7 +134,7 @@ function stylish(styles) {
 
 /**
 * Gets the current cache object
-* @tutorial cache 
+* @tutorial cache
 * @returns {Object} cache
 * @memberof stylish
 */
@@ -159,14 +160,14 @@ const clearCache = () => { cache = {}; };
 * @tutorial theme
 * @memberof stylish
 */
-const clearTheme = () => { theme = []; };
+const clearTheme = () => { theme = {}; };
 
 /**
 * Creates or overwrites the current theme
 * @param {Object} newTheme
 * @memberof stylish
 */
-const createTheme = newTheme => { theme = newTheme; }
+const createTheme = newTheme => { theme = newTheme; };
 
 stylish.__proto__.raw = raw;
 stylish.__proto__.setConfig = config;
