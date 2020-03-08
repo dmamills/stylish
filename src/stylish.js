@@ -91,17 +91,18 @@ function raw(str) {
 }
 
 /**
-* The main stylish function
-* @class
-* @tutorial main-usage
-* @tutorial advanced-usage
-* @tutorial animations
-* @tutorial theme
-* @param styles {Object|Array|Function} styles
-* @returns {String|Array<String>}
-*/
+ * The main stylish function
+ * @namespace
+ * @constructor
+ * @tutorial main-usage
+ * @tutorial advanced-usage
+ * @tutorial animations
+ * @tutorial theme
+ * @param styles {Object|Array|Function} A json representation of a css rule or keyframe, an array of css rules, or a function to invoke the theming options.
+ * @returns {String|Array<String>}
+ */
 function stylish(styles) {
-   if(arguments.length === 1) {
+    if(arguments.length === 1) {
       if(typeof styles === 'function') {
         styles = styles(theme);
         if(Array.isArray(styles)) {
@@ -163,10 +164,11 @@ const clearCache = () => { cache = {}; };
 const clearTheme = () => { theme = {}; };
 
 /**
-* Creates or overwrites the current theme
-* @param {Object} newTheme
-* @memberof stylish
-*/
+ * Creates or overwrites the current theme
+ * @param {Object} newTheme
+ * @tutorial theme
+ * @memberof stylish
+ */
 const createTheme = newTheme => { theme = newTheme; };
 
 stylish.__proto__.raw = raw;

@@ -44,10 +44,10 @@ npm test
 npm run coverage
 ```
 
-## benchmark example
+## examples
 
-you can see a small benchmarking app [here](https://dmamills.github.io/stylish-benchmark-demo)
-
+- [opensourceradio](http://radio.yomills.com) the project that caused this repo to be made
+- [the lil' benchmarker](https://dmamills.github.io/stylish-benchmark-demo) a small example app built for testing the performance of stylish 
 
 ## license
 
