@@ -1,6 +1,10 @@
 # [stylish](https://dmamills.github.io/stylish/)
 
-[![codecov.io](https://codecov.io/github/dmamills/stylish/coverage.svg?branch=master)](https://codecov.io/github/dmamills/stylish?branch=master) [![Build Status](https://secure.travis-ci.org/dmamills/stylish.png)](http://travis-ci.org/dmamills/stylish) ![Package Size](https://img.shields.io/bundlephobia/minzip/@dmamills/stylish.svg?style=flat-square) ![Zero Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)
+[![Github](https://img.shields.io/github/stars/dmamills/stylish?style=social)](https://github.com/dmamills/stylish)
+[![codecov.io](https://codecov.io/github/dmamills/stylish/coverage.svg?branch=master)](https://codecov.io/github/dmamills/stylish?branch=master)
+[![Build Status](https://secure.travis-ci.org/dmamills/stylish.png)](http://travis-ci.org/dmamills/stylish)
+![Package Size](https://img.shields.io/bundlephobia/minzip/@dmamills/stylish.svg?style=flat-square)
+![Zero Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)
 
 stylish is a lightweight framework for writing css-in-js. It's completely framework agnostic and provides the flexibility of using javascript objects without comprimising your ability to use `:pseudo`, ` + sibling`, and other more complex selectors.
 
@@ -39,6 +43,10 @@ el.classList.add(className);
 npm test
 npm run coverage
 ```
+
+## benchmark example
+
+you can see a small benchmarking app [here](https://dmamills.github.io/stylish-benchmark-demo)
 
 
 ## license
