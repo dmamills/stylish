@@ -1,6 +1,6 @@
 {
   "name": "@dmamills/stylish",
-  "version": "1.3.1",
+  "version": "1.4.1",
   "description": "a lightweight css-in-js solution",
   "main": "index.js",
   "keywords": [
@@ -11,9 +11,9 @@
     "vue"
   ],
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --require babel-core/register tests/*.js",
+    "test": "./node_modules/mocha/bin/mocha --require babel-core/register tests/**.js",
     "coverage": "./node_modules/.bin/babel-node node_modules/.bin/babel-istanbul cover node_modules/.bin/_mocha -- tests/*.js",
-    "docs": "./node_modules/.bin/jsdoc README.md src/* -u tutorials -d ./docs/ -t ./node_modules/ink-docstrap/template -c jsdoc.json"
+    "docs": "./node_modules/.bin/jsdoc README.md src/* -u tutorials -d ./docs/ -c jsdoc.json"
   },
   "author": "dmamills",
   "license": "MIT",
@@ -25,7 +25,7 @@
     "babel-preset-es2015": "^6.24.1",
     "browser-env": "^3.2.5",
     "codecov": "^3.1.0",
-    "ink-docstrap": "^1.3.2",
+    "docdash": "^1.2.0",
     "jsdoc": "^3.6.2",
     "mocha": "^5.2.0",
     "should": "^13.2.3"

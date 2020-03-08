@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>config.js - Documentation</title>
+    <title>Tutorial: cache - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -32,51 +32,27 @@
 
 <div id="main">
     
-    <h1 class="page-title">config.js</h1>
+    <h1 class="page-title">Tutorial: cache</h1>
     
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import { hash, id } from './utils';
 
-const DEFAULT_OPTIONS = {
-  classPrefix: 'stylish',
-  styleSheetId: 'stylish-sheet',
-  id,
-  hash
-};
+<header>
+    
 
-let currentSettings = {};
+    <h2>cache</h2>
+</header>
 
-/**
-* Sets the stylish configuration object
-* @tutorial config
-* @param {Object} options
-* @memberof stylish
-*/
-function config(options) {
-  currentSettings = Object.assign({}, DEFAULT_OPTIONS, options);
-}
-
-config();
-
-const settings = () => currentSettings;
-
-export {
-  settings,
-  config
-};
+<article>
+    <p>stylish maintains an internal cache to prevent duplication of classes.</p>
+<p>when stylish is invoked, a hash of the style object is created. this is stored with the generated class name. this prevents unnecessary classes from being created, as well as an easy look up for existing classes.</p>
+<p>there are two helper functions exposed that deal with this cache. They are mostly used internally for testing.</p>
+<pre class="prettyprint source lang-javascript"><code>stylish.cache() // => { } returns cache object
+stylish.clearCache() // => will reset the internal cache
 </code></pre>
-        </article>
-    </section>
+</article>
 
-
-
+</section>
 
     
     

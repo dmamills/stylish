@@ -51,12 +51,12 @@ function generateClass(styles) {
     return keyframes(className, styles[rootKeys[0]]);
   }
 
-  function parse(obj) {
+    function parse(obj, root = '') {
     return keys(obj).reduce((acc, k) => {
       if (typeof obj[k] === "string") {
-        acc.push(`${hyphenateStyleName(k)}: ${obj[k]};`);
+        acc.push(`${hyphenateStyleName(k)}:`, `${obj[k]};`);
       } else {
-        psuedoStyles[k] = parse(obj[k]);
+        psuedoStyles[`${root}${k}`] = parse(obj[k], `${root}${k}`);
       }
       return acc;
     }, []);
@@ -93,7 +93,8 @@ function raw(str) {
 /**
 * The main stylish function
 * @class
-* @tutorial main usage
+* @tutorial main-usage
+* @tutorial advanced-usage
 * @tutorial animations
 * @tutorial theme
 * @param styles {Object|Array|Function} styles
