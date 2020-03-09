@@ -16,6 +16,8 @@ Those rules are then appended to the generated stylesheet.
 The class name returned from the function can then be used on any DOM element.
 stylish is completey framework agnostic.
 
+see the full documentation [here](https://dmamills.github.io/stylish)
+
 ## basic example
 
 ```javascript
@@ -27,9 +29,6 @@ const className = stylish({
   ':hover': {
     backgroundColor: 'white',
     color: 'white'
-  },
-  '> h1': {
-    color: 'dodgerblue'
   }
 });
 
@@ -48,6 +47,7 @@ npm run coverage
 
 - [opensourceradio](http://radio.yomills.com) the project that caused this repo to be made
 - [the lil' benchmarker](https://dmamills.github.io/stylish-benchmark-demo) a small example app built for testing the performance of stylish 
+- [svelte + stylish sandbox](https://codesandbox.io/s/svelte-stylish-z0ywf) a codesand box using svelte + stylish, showcasing basic usage
 
 ## license
 
