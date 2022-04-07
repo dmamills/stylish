@@ -1,5 +1,12 @@
 import { hash, id } from './utils';
 
+interface StylishSettings {
+  classPrefix: string,
+  styleSheetId: string,
+  id: () => string | number,
+  hash: (string) => number
+}
+
 const DEFAULT_OPTIONS = {
   classPrefix: 'stylish',
   styleSheetId: 'stylish-sheet',
@@ -7,7 +14,7 @@ const DEFAULT_OPTIONS = {
   hash
 };
 
-let currentSettings = {};
+let currentSettings = {} as StylishSettings;
 
 /**
 * Sets the stylish configuration object
@@ -15,13 +22,13 @@ let currentSettings = {};
 * @param {Object} options
 * @memberof stylish
 */
-function config(options) {
+function config(options?: Partial<StylishSettings>) {
   currentSettings = Object.assign({}, DEFAULT_OPTIONS, options);
 }
 
 config();
 
-const settings = () => currentSettings;
+const settings = () : StylishSettings => (currentSettings as StylishSettings);
 
 export {
   settings,

@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="stylish.html">stylish</a><ul class='methods'><li data-type='method'><a href="stylish.html#.clearCache">clearCache</a></li><li data-type='method'><a href="stylish.html#.clearTheme">clearTheme</a></li><li data-type='method'><a href="stylish.html#.config">config</a></li><li data-type='method'><a href="stylish.html#.createTheme">createTheme</a></li><li data-type='method'><a href="stylish.html#.getCache">getCache</a></li><li data-type='method'><a href="stylish.html#.getTheme">getTheme</a></li><li data-type='method'><a href="stylish.html#.raw">raw</a></li></ul></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-advanced-usage.html">advanced selectors</a></li><li><a href="tutorial-animations.html">animations</a></li><li><a href="tutorial-cache.html">cache</a></li><li><a href="tutorial-config.html">configuration</a></li><li><a href="tutorial-main-usage.html">basic usage</a></li><li><a href="tutorial-raw.html">raw css</a></li><li><a href="tutorial-theme.html">theme options</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Tutorials</h3><ul><li><a href="tutorial-advanced-usage.html">advanced selectors</a></li><li><a href="tutorial-animations.html">animations</a></li><li><a href="tutorial-cache.html">cache</a></li><li><a href="tutorial-config.html">configuration</a></li><li><a href="tutorial-main-usage.html">basic usage</a></li><li><a href="tutorial-raw.html">raw css</a></li><li><a href="tutorial-theme.html">theme options</a></li></ul>
 </nav>
 
 <div id="main">
@@ -42,87 +42,78 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { stringify, hyphenateStyleName, isKeyframes } from './utils';
-import { settings, config } from './config';
+            <pre class="prettyprint source linenums"><code>"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("./utils");
+const config_1 = require("./config");
 const keys = Object.keys;
-
 let cache = {};
 let theme = {};
-
 function createOrUpdateStyledNode(content) {
-  const { styleSheetId } = settings();
-  let el = document.getElementById(styleSheetId);
-  if (el) {
-    el.innerHTML = `${el.innerHTML}\n${content}`;
-  } else {
-    let el = document.createElement("style");
+    const { styleSheetId } = (0, config_1.settings)();
+    let el = document.getElementById(styleSheetId);
+    if (el) {
+        el.innerHTML = `${el.innerHTML}\n${content}`;
+        return;
+    }
+    el = document.createElement("style");
     el.setAttribute("id", styleSheetId);
     el.innerHTML = content;
     document.head.appendChild(el);
-  }
 }
-
 function keyframes(className, styles) {
-  const base = `@keyframes ${className} {`;
-  const timings = keys(styles).map(timing => {
-    const timingValues = styles[timing];
-    const timingStyles = keys(timingValues).map(timingStyle => {
-      return `${hyphenateStyleName(timingStyle)}: ${timingValues[timingStyle]};`;
+    const base = `@keyframes ${className} {`;
+    const timings = keys(styles).map(timing => {
+        const timingValues = styles[timing];
+        const timingStyles = keys(timingValues).map(timingStyle => {
+            return `${(0, utils_1.hyphenateStyleName)(timingStyle)}: ${timingValues[timingStyle]};`;
+        });
+        return `${timing} { ${timingStyles.join(' ')} }`;
     });
-      return `${timing} { ${timingStyles.join(' ')} }`;
-  });
-
-  return {
-    className,
-    cssRules: [ `${base} ${timings.join(' ')} }` ]
-  };
+    return {
+        className,
+        cssRules: [`${base} ${timings.join(' ')} }`]
+    };
 }
-
 function generateClass(styles) {
-  const { hash, id, classPrefix } = settings();
-  let psuedoStyles = {};
-  let hashedStyles = hash(JSON.stringify(styles));
-
-  if(cache[hashedStyles]) {
-    return { className: cache[hashedStyles] };
-  }
-
-  let className = `${classPrefix}-${id()}`;
-  cache[hashedStyles] = className;
-
-  const rootKeys = keys(styles);
-  if(rootKeys.length == 1 &amp;&amp; isKeyframes(rootKeys[0])) {
-    return keyframes(className, styles[rootKeys[0]]);
-  }
-
+    const { hash, id, classPrefix } = (0, config_1.settings)();
+    let psuedoStyles = {};
+    let hashedStyles = hash(JSON.stringify(styles));
+    if (cache[hashedStyles]) {
+        return { className: cache[hashedStyles] };
+    }
+    let className = `${classPrefix}-${id()}`;
+    cache[hashedStyles] = className;
+    const rootKeys = keys(styles);
+    if (rootKeys.length == 1 &amp;&amp; (0, utils_1.isKeyframes)(rootKeys[0])) {
+        return keyframes(className, styles[rootKeys[0]]);
+    }
     function parse(obj, root = '') {
-    return keys(obj).reduce((acc, k) => {
-      if (typeof obj[k] === "string") {
-        acc.push(`${hyphenateStyleName(k)}:`, `${obj[k]};`);
-      } else {
-        psuedoStyles[`${root}${k}`] = parse(obj[k], `${root}${k}`);
-      }
-      return acc;
-    }, []);
-  }
-
-  const mainStyles = parse(styles);
-  const selector = `.${className}`;
-  const cssRules = [
-    stringify(selector, mainStyles),
-    ...keys(psuedoStyles).reduce((acc, pseudoSelector) => {
-      let sel = `${selector}${pseudoSelector}`;
-      acc.push(stringify(sel, psuedoStyles[pseudoSelector]));
-      return acc;
-    }, [])
-  ];
-
-  return {
-    className,
-    cssRules
-  };
+        return keys(obj).reduce((acc, k) => {
+            if (typeof obj[k] === "string") {
+                acc.push(`${(0, utils_1.hyphenateStyleName)(k)}:`, `${obj[k]};`);
+            }
+            else {
+                psuedoStyles[`${root}${k}`] = parse(obj[k], `${root}${k}`);
+            }
+            return acc;
+        }, []);
+    }
+    const mainStyles = parse(styles);
+    const selector = `.${className}`;
+    const cssRules = [
+        (0, utils_1.stringify)(selector, mainStyles),
+        ...keys(psuedoStyles).reduce((acc, pseudoSelector) => {
+            let sel = `${selector}${pseudoSelector}`;
+            acc.push((0, utils_1.stringify)(sel, psuedoStyles[pseudoSelector]));
+            return acc;
+        }, [])
+    ];
+    return {
+        className,
+        cssRules
+    };
 }
-
 /**
 * Adds raw css to the stylesheet
 * @tutorial raw
@@ -130,53 +121,41 @@ function generateClass(styles) {
 * @memberof stylish
 */
 function raw(str) {
-  str = str.replace(/\s+/g, " ");
-  createOrUpdateStyledNode(str);
+    str = str.replace(/\s+/g, " ");
+    createOrUpdateStyledNode(str);
 }
-
-/**
- * The main stylish function
- * @namespace
- * @constructor
- * @tutorial main-usage
- * @tutorial advanced-usage
- * @tutorial animations
- * @tutorial theme
- * @param styles {Object|Array|Function} A json representation of a css rule or keyframe, an array of css rules, or a function to invoke the theming options.
- * @returns {String|Array&lt;String>}
- */
-function stylish(styles) {
-    if(arguments.length === 1) {
-      if(typeof styles === 'function') {
-        styles = styles(theme);
-        if(Array.isArray(styles)) {
-          return stylish(...styles);
+function isThemeInvocation(test) { return typeof test === 'function'; }
+function stylish(styles, ...extra) {
+    if (arguments.length === 1) {
+        if (isThemeInvocation(styles)) {
+            const fn = styles;
+            styles = fn(theme);
+            if (Array.isArray(styles)) {
+                //@ts-ignore
+                return stylish(...styles);
+            }
         }
-      }
-
-      const { className, cssRules } = generateClass(styles);
-      if(cssRules &amp;&amp; cssRules.length > 0) {
-        createOrUpdateStyledNode(cssRules.join('\n'));
-      }
-      return className;
-   }
-
-  const { classNames, cssRules } = [].reduce.call(arguments, (acc, s) => {
-    const { className, cssRules } = generateClass(s);
-    acc.classNames.push(className);
-    if(cssRules) {
-      acc.cssRules.push(...cssRules);
+        //handle single styles case
+        const { className, cssRules } = generateClass(styles);
+        if (cssRules &amp;&amp; cssRules.length > 0) {
+            createOrUpdateStyledNode(cssRules.join('\n'));
+        }
+        return className;
     }
-    return acc;
-  }, { classNames: [], cssRules: []});
-
-  if(cssRules.length) {
-    createOrUpdateStyledNode(cssRules.join('\n'));
-  }
-
-  return classNames;
+    //handle variadic invocation
+    const { classNames, cssRules } = [].reduce.call(arguments, (acc, s) => {
+        const { className, cssRules } = generateClass(s);
+        acc.classNames.push(className);
+        if (cssRules) {
+            acc.cssRules.push(...cssRules);
+        }
+        return acc;
+    }, { classNames: [], cssRules: [] });
+    if (cssRules.length) {
+        createOrUpdateStyledNode(cssRules.join('\n'));
+    }
+    return classNames;
 }
-
 /**
 * Gets the current cache object
 * @tutorial cache
@@ -184,7 +163,6 @@ function stylish(styles) {
 * @memberof stylish
 */
 const getCache = () => cache;
-
 /**
 * Gets the current theme object
 * @tutorial theme
@@ -192,21 +170,18 @@ const getCache = () => cache;
 * @memberof stylish
 */
 const getTheme = () => theme;
-
 /**
 * Clears the style object cache
 * @tutorial cache
 * @memberof stylish
 */
 const clearCache = () => { cache = {}; };
-
 /**
 * Clears current theme object
 * @tutorial theme
 * @memberof stylish
 */
 const clearTheme = () => { theme = {}; };
-
 /**
  * Creates or overwrites the current theme
  * @param {Object} newTheme
@@ -214,16 +189,14 @@ const clearTheme = () => { theme = {}; };
  * @memberof stylish
  */
 const createTheme = newTheme => { theme = newTheme; };
-
-stylish.__proto__.raw = raw;
-stylish.__proto__.setConfig = config;
-stylish.__proto__.cache = getCache;
-stylish.__proto__.theme = getTheme;
-stylish.__proto__.createTheme = createTheme;
-stylish.__proto__.clearCache = clearCache;
-stylish.__proto__.clearTheme = clearTheme;
-
-export default stylish;
+stylish.raw = raw;
+stylish.setConfig = config_1.config;
+stylish.cache = getCache;
+stylish.theme = getTheme;
+stylish.createTheme = createTheme;
+stylish.clearCache = clearCache;
+stylish.clearTheme = clearTheme;
+exports.default = stylish;
 </code></pre>
         </article>
     </section>
@@ -238,7 +211,7 @@ export default stylish;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> on Mon Mar 09 2020 16:11:04 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> on Thu Apr 07 2022 18:32:39 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

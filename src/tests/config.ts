@@ -1,8 +1,6 @@
-"use strict";
-
-import should from 'should';
 import browser from 'browser-env';
-import stylish from '../';
+import stylish from '../index';
+import { hash } from '../utils';
 
 beforeEach(() => {
   browser();
@@ -50,4 +48,8 @@ describe('stylish config', () => {
       c1.should.equal('stylish-1');
       c2.should.equal('stylish-2');
   });
+
+  it('should not hash empty string', () => {
+    hash('').should.equal(0);
+  })
 });

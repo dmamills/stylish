@@ -1,7 +1,6 @@
-"use strict";
-import should from 'should';
+import * as should from 'should';
 import browser from 'browser-env';
-import stylish from '../';
+import stylish from '../index';
 
 beforeEach(() => {
   browser();
@@ -23,7 +22,7 @@ describe('stylish keyframes', () => {
   it('should support keyframes using short hand', () => {
     const className = stylish(keyframeStyles);
     const expected = `@keyframes ${className} { from { background-color: red; } to { background-color: yellow; } }`
-    
+
     const styleEls = document.head.querySelectorAll('style');
     const styleLines = styleEls[0].innerHTML.split('\n');
     styleLines.length.should.equal(1);
@@ -40,7 +39,7 @@ describe('stylish keyframes', () => {
       }
     });
     const expected = `@keyframes ${className} { 0% { color: red; } 15% { color: orange; } 55% { color: yellow; } 100% { color: green; } }`
-    
+
     const styleEls = document.head.querySelectorAll('style');
     const styleLines = styleEls[0].innerHTML.split('\n');
     styleLines.length.should.equal(1);
