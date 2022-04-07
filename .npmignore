@@ -1,3 +1,10 @@
 docs/**
 tutorials/**
 coverage/**
+src/**
+dist/tests/**
+.babelrc
+jsdoc.json
+tsconfig.json
+.codecov.yml
+.travis.yml
