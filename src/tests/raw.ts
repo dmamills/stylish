@@ -1,7 +1,5 @@
-"use strict";
-import should from 'should';
 import browser from 'browser-env';
-import stylish from '../';
+import stylish from '../index';
 
 beforeEach(() => {
   browser();

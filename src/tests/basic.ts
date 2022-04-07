@@ -1,8 +1,6 @@
-"use strict";
-
-import should from 'should';
+require('should');
 import browser from 'browser-env';
-import stylish from '../';
+import stylish from '../index';
 
 beforeEach(() => {
   browser();
@@ -17,7 +15,6 @@ const simpleStyles = {
 }
 
 describe('stylish', () => {
-
     it('should should have expected functions', () => {
         stylish.should.be.Function();
         stylish.cache.should.be.Function();
@@ -70,7 +67,7 @@ describe('stylish', () => {
       const styleLines = styleEls[0].innerHTML.split('\n');
       styleLines.length.should.equal(1);
       styleLines[0].should.equal(`.${c1} { color: red; }`);
-      c1.should.equal(c2); 
+      c1.should.equal(c2);
     });
 
     it('should accept multiple objects to batch generate styles', () => {

@@ -1,8 +1,8 @@
 {
   "name": "@dmamills/stylish",
-  "version": "1.4.2",
+  "version": "2.0.0",
   "description": "a lightweight css-in-js solution",
-  "main": "index.js",
+  "main": "dist/index.js",
   "keywords": [
     "css",
     "styles",
@@ -11,15 +11,25 @@
     "vue"
   ],
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --require babel-core/register tests/**.js",
-    "coverage": "./node_modules/.bin/babel-node node_modules/.bin/babel-istanbul cover node_modules/.bin/_mocha -- tests/*.js",
-    "docs": "./node_modules/.bin/jsdoc README.md src/* -u tutorials -d ./docs/ -c jsdoc.json"
+    "cleanandbuild": "rm -rf ./dist && npm run build",
+    "prebuild": "rm -rf ./dist",
+    "predocs": "npm run cleanandbuild",
+    "precoverage": "npm run cleanandbuild",
+    "pretest": "npm run cleanandbuild",
+    "test": "./node_modules/mocha/bin/mocha --require babel-core/register dist/tests/**.js",
+    "coverage": "./node_modules/.bin/babel-node node_modules/.bin/babel-istanbul cover node_modules/.bin/_mocha -- dist/tests/*.js",
+    "docs": "./node_modules/.bin/jsdoc README.md dist/* -u tutorials -d ./docs/ -c jsdoc.json",
+    "build": "tsc"
   },
   "author": "dmamills",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "typescript": "^4.6.3"
+  },
   "devDependencies": {
     "@babel/preset-env": "^7.2.3",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "^17.0.23",
     "babel-cli": "^6.7.5",
     "babel-istanbul": "^0.12.2",
     "babel-preset-es2015": "^6.24.1",

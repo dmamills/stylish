@@ -1,7 +1,5 @@
-"use strict";
-import should from 'should';
 import browser from 'browser-env';
-import stylish from '../';
+import stylish from '../index';
 
 beforeEach(() => {
   browser();
@@ -12,7 +10,7 @@ describe('stylish utilities', () => {
     it('should return current caches state', () => {
       const c1 = stylish({ color: 'red' });
       const c2 = stylish({ color: 'red' });
-      
+
       Object.keys(stylish.cache()).length.should.equal(1);
       Object.values(stylish.cache())[0].should.equal(c1);
 
