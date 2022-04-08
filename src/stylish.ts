@@ -113,7 +113,6 @@ function stylish(styles: StylishArgs, ...extra: any) {
         }
       }
 
-      //handle single styles case
       const { className, cssRules } = generateClass(styles);
       if(cssRules && cssRules.length > 0) {
         createOrUpdateStyledNode(cssRules.join('\n'));
@@ -121,8 +120,6 @@ function stylish(styles: StylishArgs, ...extra: any) {
       return className;
    }
 
-
-  //handle variadic invocation
   const { classNames, cssRules } = [].reduce.call(arguments, (acc, s) => {
     const { className, cssRules } = generateClass(s);
     acc.classNames.push(className);
